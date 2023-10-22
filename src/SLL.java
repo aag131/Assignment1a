@@ -97,8 +97,20 @@ public class SLL<Type> {
     }
 
     public Type get(int theIndex) {
-        //TODO write get
-        return null;
+        //check if list is empty; I looked online to figure out what exception to use
+        if (count == 0) {
+            throw new NoSuchElementException("List is empty. So no element exists");
+        }
+        //check if index is within bounds
+        if (theIndex >= count || theIndex < 0) {
+            throw new IllegalArgumentException("Index is out of bounds");
+        }
+        Type result;
+        Node curr = head;
+        for (int i = 0; i <= theIndex; i++) {
+            curr = curr.next;
+        }
+        return (Type) curr.elem;
     }
 
     public void swap(int theIndex1, int theIndex2) {
@@ -107,8 +119,14 @@ public class SLL<Type> {
 
     @Override
     public String toString() {
-        //TODO write toString
-        return "";
+        String result = "[ ";
+        Node curr = head;
+        for (int i = 0; i < count; i++) {
+            result += ", " + curr.elem;
+            curr = curr.next;
+        }
+        result += "]";
+        return result;
     }
 
     // private helper method to specifically add an item if the linked list is empty.
@@ -117,14 +135,6 @@ public class SLL<Type> {
         head.elem = theElem;
         count++;
     }
-    //private helper method to check if something is null and throwing an exception
-    //doing this so I don't have to write the same code over and over
-    private void isNull(Type theObj) {
-        if (theObj == null) {
-            throw new NullPointerException("Cannot pass null object");
-        }
-    }
-
 
     // nested node class
     class Node<T> {
@@ -135,7 +145,6 @@ public class SLL<Type> {
             elem = null;
             next = null;
         }
-
 
     }
 }
