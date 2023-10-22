@@ -119,12 +119,12 @@ public class SLL<Type> {
         Node beforeI2 = head;
         //find corresponding nodes
         for (int i = 0; i < count; i++) {
-            if (i == theIndex1--) {
-                beforeI1 = curr;
-            } else if (i == theIndex2--) {
-                beforeI2 = curr;
+            if (i < theIndex1 ) {
+                beforeI1 = beforeI1.next;
+                beforeI2 = beforeI2.next;
+            } else {
+                beforeI2 = beforeI2;
             }
-            curr = curr.next;
         }
         //changing the pointers before the swapped indices
         Node i1 = beforeI1.next;
