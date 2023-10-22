@@ -7,7 +7,7 @@ Assignment 1a
 Due: Oct 22, 2023
  */
 public class SLL<Type> {
-    private Node head;
+    private Node<Type> head;
     private int count;
     //constructor
     public SLL() {
@@ -18,10 +18,10 @@ public class SLL<Type> {
     void addFront(Type theElem) {
         // check for empty
         if (count == 0) {
-            head = new Node();
+            head = new Node<>();
             head.elem = theElem;
         } else {
-            Node newNode = new Node();
+            Node<Type> newNode = new Node<>();
             newNode.elem = theElem;
             newNode.next = head;
             head = newNode;
@@ -33,9 +33,9 @@ public class SLL<Type> {
         if (count == 0) {
             addFront(theElem);
         } else {
-            Node newNode = new Node();
+            Node<Type> newNode = new Node<>();
             newNode.elem = theElem;
-            Node curr = head;
+            Node<Type> curr = head;
             for (int i = 1; i < count; i++) {
                 curr = curr.next;
             }
@@ -57,9 +57,9 @@ public class SLL<Type> {
         if (theIndex == count) {
             addRear(theElem);
         }
-        Node newNode = new Node();
+        Node<Type> newNode = new Node<>();
         newNode.elem = theElem;
-        Node curr = head;
+        Node<Type> curr = head;
         for (int i = 1; i < theIndex; i++) {
             curr = curr.next;
         }
@@ -78,8 +78,8 @@ public class SLL<Type> {
             throw new IllegalArgumentException("Index is out of bounds");
         }
         //increment through
-        Node doomed = null;
-        Node curr = head;
+        Node<Type> doomed;
+        Node<Type> curr = head;
         for (int i = 1; i < theIndex; i++) {
             curr = curr.next;
         }
@@ -87,7 +87,7 @@ public class SLL<Type> {
         doomed = curr.next;
         curr.next = curr.next.next;
         count--;
-        return (Type) doomed.elem;
+        return doomed.elem;
     }
 
     public Type get(int theIndex) {
@@ -99,12 +99,11 @@ public class SLL<Type> {
         if (theIndex >= count || theIndex < 0) {
             throw new IllegalArgumentException("Index is out of bounds");
         }
-        Type result;
-        Node curr = head;
+        Node<Type> curr = head;
         for (int i = 1; i <= theIndex; i++) {
             curr = curr.next;
         }
-        return (Type) curr.elem;
+        return curr.elem;
     }
 
     public void swap(int theIndex1, int theIndex2) {
@@ -116,8 +115,8 @@ public class SLL<Type> {
         if (theIndex1 >= count || theIndex1 < 0 || theIndex2 >= count || theIndex2 < 0) {
             throw new IllegalArgumentException("Index is out of bounds");
         }
-        Node beforeI1 = head;
-        Node beforeI2 = head;
+        Node<Type> beforeI1 = head;
+        Node<Type> beforeI2 = head;
         //find corresponding nodes. Accounting for if first index is at the start
         if (theIndex1 != 0) {
             for (int i = 0; i < theIndex1 - 1; i++) {
@@ -128,21 +127,21 @@ public class SLL<Type> {
             beforeI2 = beforeI1.next;
         }
         //Node i1;
-        Node i2 = beforeI2.next;
+        Node<Type> i2 = beforeI2.next;
         if (theIndex1 == 0) {
-            //changing pointers and using dummy value to not lose the soon to be reaplaced value
-            Node saver = i2.next;
+            //changing pointers and using dummy value to not lose the soon-to-be replaced value
+            Node<Type> saver = i2.next;
             i2.next = head.next;
             head.next = saver;
             beforeI2.next = head;
             head = i2;
         } else {
             //changing the pointers before the swapped indices
-            Node i1 = beforeI1.next;
+            Node<Type> i1 = beforeI1.next;
             beforeI1.next = i2;
             beforeI2.next = i1;
             //updating the swapped nodes next pointers. Used a dummy node so a pointer isn't lost.
-            Node saver = i1.next;
+            Node<Type>saver = i1.next;
             i1.next = i2.next;
             i2.next = saver;
 
@@ -153,7 +152,7 @@ public class SLL<Type> {
     @Override
     public String toString() {
         String result = "[" + head.elem;
-        Node curr = head.next;
+        Node<Type> curr = head.next;
         for (int i = 1; i < count; i++) {
             result += ", " + curr.elem;
             curr = curr.next;
@@ -163,9 +162,9 @@ public class SLL<Type> {
     }
 
     // nested node class
-    class Node<T> {
+    class Node<Type> {
         private Type elem;
-        private Node next;
+        private Node<Type> next;
         Node() {
             elem = null;
             next = null;
