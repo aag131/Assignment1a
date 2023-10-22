@@ -29,9 +29,6 @@ public class SLL<Type> {
     }
 
     public void addRear(Type theElem) {
-        if (theElem == null) {
-            throw new NullPointerException("Cannot pass null element");
-        }
         if (count == 0) {
             addIfEmpty(theElem);
         } else {
@@ -47,10 +44,6 @@ public class SLL<Type> {
     }
 
     public void add(int theIndex, Type theElem) {
-        // checks if elem is null
-        if (theElem == null) {
-            throw new NullPointerException("Cannot pass null element");
-        }
         // check if index is in bounds, assumes that an index greater than count isn't valid
         if (theIndex > count || theIndex < 0) {
             throw new IllegalArgumentException("Index is out of bounds");
@@ -114,7 +107,39 @@ public class SLL<Type> {
     }
 
     public void swap(int theIndex1, int theIndex2) {
-        //TODO write swap
+        //check if list is empty; I looked online to figure out what exception to use
+        if (count == 0) {
+            throw new NoSuchElementException("List is empty. So no element exists");
+        }
+        //check if index is within bounds
+        if (theIndex1 >= count || theIndex1 < 0 || theIndex2 >= count || theIndex2 < 0) {
+            throw new IllegalArgumentException("Index is out of bounds");
+        }
+        Node beforeI1 = head;
+        Node beforeI2 = head;
+        //find corresponding nodes
+        for (int i = 0; i < count; i++) {
+            if (i == theIndex1--) {
+                beforeI1 = curr;
+            } else if (i == theIndex2--) {
+                beforeI2 = curr;
+            }
+            curr = curr.next;
+        }
+        //changing the pointers before the swapped indices
+        Node i1 = beforeI1.next;
+        Node i2 = beforeI2.next;
+        beforeI1.next = i2;
+        beforeI2.next = i1;
+        //updating the swapped nodes next pointers. Used a dummy node so a pointer isn't lost.
+        Node saver = i1.next;
+        i1.next = i2.next;
+        i2.next = saver;
+        //checking if first index is also SLL head
+        if (i1 == head) {
+            head = i2;
+        }
+
     }
 
     @Override
