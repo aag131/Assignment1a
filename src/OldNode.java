@@ -4,17 +4,17 @@ CSS 342
 Assignment 1a
 Due: Oct 22, 2023
  */
-class Node<Type> {
+class OldNode<Type> {
     private Type elem;
-    private Node next;
+    private OldNode next;
     //Default constructor
-    public Node() {
+    public OldNode() {
         elem = null;
         next = null;
     }
 
     //Constructor for Single Linked List application
-    public Node(Type theElem, Node theNext) {
+    public OldNode(Type theElem, OldNode theNext) {
         if (theElem == null || theNext == null) {
             throw new NullPointerException("Cannot pass null value");
         }
@@ -23,12 +23,12 @@ class Node<Type> {
     }
 
     //Getter for element field
-    public Type getElement() {
+    public Type elem() {
         return elem;
     }
 
     //Getter for next field
-    public Node getNext() {
+    public OldNode next() {
         return next;
     }
 
@@ -42,7 +42,7 @@ class Node<Type> {
     }
 
     //Setter for next field
-    public void setNext(Node theNext) {
+    public void setNext(OldNode theNext) {
         if (theNext == null) {
             throw new NullPointerException("Cannot pass null node");
         }
