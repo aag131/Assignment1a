@@ -1,3 +1,5 @@
+import java.util.NoSuchElementException;
+
 /*
 Alyssa Goodwin
 CSS 342
@@ -27,6 +29,9 @@ public class SLL<Type> {
     }
 
     public void addRear(Type theElem) {
+        if (theElem == null) {
+            throw new NullPointerException("Cannot pass null element");
+        }
         if (count == 0) {
             addIfEmpty(theElem);
         } else {
@@ -42,14 +47,53 @@ public class SLL<Type> {
     }
 
     public void add(int theIndex, Type theElem) {
-        //TODO write add
+        // checks if elem is null
+        if (theElem == null) {
+            throw new NullPointerException("Cannot pass null element");
+        }
+        // check if index is in bounds, assumes that an index greater than count isn't valid
+        if (theIndex > count || theIndex < 0) {
+            throw new IllegalArgumentException("Index is out of bounds");
+        }
+        // check if list is empty, if so calls addIfEmpty
+        if (count == 0) {
+            addIfEmpty(theElem);
+        }
+        // check if index is at the end, if so calls addRear
+        if (theIndex == count) {
+            addRear(theElem);
+        }
+        Node newNode = new Node();
+        newNode.elem = theElem;
+        Node curr = head;
+        for (int i = 0; i < theIndex; i++) {
+            curr = curr.next;
+        }
+        curr.next = newNode;
+        newNode.next = curr.next;
         count++;
     }
 
     public Type delete(int theIndex) {
-        //TODO write delete
+        //check if list is empty; I looked online to figure out what exception to use
+        if (count == 0) {
+            throw new NoSuchElementException("List is empty. So no element exists");
+        }
+        //check if index is within bounds
+        if (theIndex >= count || theIndex < 0) {
+            throw new IllegalArgumentException("Index is out of bounds");
+        }
+        //increment through
+        Node doomed = null;
+        Node curr = head;
+        for (int i = 0; i < theIndex; i++) {
+            curr = curr.next;
+        }
+        //change pointers
+        doomed = curr.next;
+        curr.next = curr.next.next;
         count--;
-        return null;
+        return (Type) doomed.elem;
     }
 
     public Type get(int theIndex) {
@@ -73,8 +117,16 @@ public class SLL<Type> {
         head.elem = theElem;
         count++;
     }
+    //private helper method to check if something is null and throwing an exception
+    //doing this so I don't have to write the same code over and over
+    private void isNull(Type theObj) {
+        if (theObj == null) {
+            throw new NullPointerException("Cannot pass null object");
+        }
+    }
 
 
+    // nested node class
     class Node<T> {
         private Type elem;
         private Node next;
@@ -83,5 +135,7 @@ public class SLL<Type> {
             elem = null;
             next = null;
         }
+
+
     }
 }
