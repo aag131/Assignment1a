@@ -16,9 +16,9 @@ public class SLL<Type> {
     }
 
     void addFront(Type theElem) {
-        // not adding a throw for null since it's in node class
         if (count == 0) {
-            addIfEmpty(theElem);
+            head = new Node();
+            head.elem = theElem;
         } else {
             Node newNode = new Node();
             newNode.elem = theElem;
@@ -30,12 +30,12 @@ public class SLL<Type> {
 
     public void addRear(Type theElem) {
         if (count == 0) {
-            addIfEmpty(theElem);
+            addFront(theElem);
         } else {
             Node newNode = new Node();
             newNode.elem = theElem;
             Node curr = head;
-            for (int i = 0; i < count; i++) {
+            for (int i = 1; i < count; i++) {
                 curr = curr.next;
             }
             curr.next = newNode;
@@ -59,11 +59,11 @@ public class SLL<Type> {
         Node newNode = new Node();
         newNode.elem = theElem;
         Node curr = head;
-        for (int i = 0; i < theIndex; i++) {
+        for (int i = 1; i < theIndex; i++) {
             curr = curr.next;
         }
-        curr.next = newNode;
         newNode.next = curr.next;
+        curr.next = newNode;
         count++;
     }
 
@@ -79,7 +79,7 @@ public class SLL<Type> {
         //increment through
         Node doomed = null;
         Node curr = head;
-        for (int i = 0; i < theIndex; i++) {
+        for (int i = 1; i < theIndex; i++) {
             curr = curr.next;
         }
         //change pointers
@@ -100,7 +100,7 @@ public class SLL<Type> {
         }
         Type result;
         Node curr = head;
-        for (int i = 0; i <= theIndex; i++) {
+        for (int i = 1; i <= theIndex; i++) {
             curr = curr.next;
         }
         return (Type) curr.elem;
@@ -118,7 +118,7 @@ public class SLL<Type> {
         Node beforeI1 = head;
         Node beforeI2 = head;
         //find corresponding nodes
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < theIndex2; i++) {
             if (i < theIndex1 ) {
                 beforeI1 = beforeI1.next;
                 beforeI2 = beforeI2.next;
@@ -144,9 +144,9 @@ public class SLL<Type> {
 
     @Override
     public String toString() {
-        String result = "[ ";
-        Node curr = head;
-        for (int i = 0; i < count; i++) {
+        String result = "[" + head.elem;
+        Node curr = head.next;
+        for (int i = 1; i < count; i++) {
             result += ", " + curr.elem;
             curr = curr.next;
         }
@@ -165,7 +165,6 @@ public class SLL<Type> {
     class Node<T> {
         private Type elem;
         private Node next;
-
         Node() {
             elem = null;
             next = null;
