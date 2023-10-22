@@ -5,11 +5,15 @@ Assignment 1a
 Due: Oct 22, 2023
  */
 public class SLL<Type> {
+    private Node head;
     private int count;
     public SLL() {
         count = 0;
+        head = null;
     }
+    private void addIfEmpty(Type elem) {
 
+    }
     void addFront(Type elem) {
 
     }
