@@ -16,6 +16,7 @@ public class SLL<Type> {
     }
 
     void addFront(Type theElem) {
+        // check for empty
         if (count == 0) {
             head = new Node();
             head.elem = theElem;
@@ -50,7 +51,7 @@ public class SLL<Type> {
         }
         // check if list is empty, if so calls addIfEmpty
         if (count == 0) {
-            addIfEmpty(theElem);
+            addFront(theElem);
         }
         // check if index is at the end, if so calls addRear
         if (theIndex == count) {
@@ -117,27 +118,34 @@ public class SLL<Type> {
         }
         Node beforeI1 = head;
         Node beforeI2 = head;
-        //find corresponding nodes
-        for (int i = 0; i < theIndex2; i++) {
-            if (i < theIndex1 ) {
+        //find corresponding nodes. Accounting for if first index is at the start
+        if (theIndex1 != 0) {
+            for (int i = 0; i < theIndex1 - 1; i++) {
                 beforeI1 = beforeI1.next;
-                beforeI2 = beforeI2.next;
-            } else {
-                beforeI2 = beforeI2;
             }
         }
-        //changing the pointers before the swapped indices
-        Node i1 = beforeI1.next;
+        for (int i = theIndex1 - 1; i < theIndex2 - 1; i++) {
+            beforeI2 = beforeI1.next;
+        }
+        //Node i1;
         Node i2 = beforeI2.next;
-        beforeI1.next = i2;
-        beforeI2.next = i1;
-        //updating the swapped nodes next pointers. Used a dummy node so a pointer isn't lost.
-        Node saver = i1.next;
-        i1.next = i2.next;
-        i2.next = saver;
-        //checking if first index is also SLL head
-        if (i1 == head) {
+        if (theIndex1 == 0) {
+            //changing pointers and using dummy value to not lose the soon to be reaplaced value
+            Node saver = i2.next;
+            i2.next = head.next;
+            head.next = saver;
+            beforeI2.next = head;
             head = i2;
+        } else {
+            //changing the pointers before the swapped indices
+            Node i1 = beforeI1.next;
+            beforeI1.next = i2;
+            beforeI2.next = i1;
+            //updating the swapped nodes next pointers. Used a dummy node so a pointer isn't lost.
+            Node saver = i1.next;
+            i1.next = i2.next;
+            i2.next = saver;
+
         }
 
     }
@@ -152,13 +160,6 @@ public class SLL<Type> {
         }
         result += "]";
         return result;
-    }
-
-    // private helper method to specifically add an item if the linked list is empty.
-    private void addIfEmpty(Type theElem) {
-        head = new Node();
-        head.elem = theElem;
-        count++;
     }
 
     // nested node class
