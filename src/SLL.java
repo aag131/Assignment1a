@@ -126,7 +126,6 @@ public class SLL<Type> {
         for (int i = theIndex1 - 1; i < theIndex2 - 1; i++) {
             beforeI2 = beforeI1.next;
         }
-        //Node i1;
         Node<Type> i2 = beforeI2.next;
         if (theIndex1 == 0) {
             //changing pointers and using dummy value to not lose the soon-to-be replaced value
@@ -135,7 +134,7 @@ public class SLL<Type> {
             head.next = saver;
             beforeI2.next = head;
             head = i2;
-        } else {
+        } else if (theIndex1 != theIndex2) {
             //changing the pointers before the swapped indices
             Node<Type> i1 = beforeI1.next;
             beforeI1.next = i2;
@@ -144,7 +143,6 @@ public class SLL<Type> {
             Node<Type>saver = i1.next;
             i1.next = i2.next;
             i2.next = saver;
-
         }
 
     }

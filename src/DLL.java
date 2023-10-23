@@ -24,6 +24,7 @@ public class DLL<Type> {
             Node<Type> newNode = new Node<>();
             newNode.elem = theElem;
             newNode.next = head;
+            head.prev = newNode;
             head = newNode;
         }
         count++;
@@ -40,6 +41,7 @@ public class DLL<Type> {
                 curr = curr.next;
             }
             curr.next = newNode;
+            newNode.prev = curr;
             count++;
         }
     }
@@ -64,7 +66,9 @@ public class DLL<Type> {
             curr = curr.next;
         }
         newNode.next = curr.next;
+        newNode.prev = curr;
         curr.next = newNode;
+        newNode.next.prev = newNode;
         count++;
     }
 
@@ -78,14 +82,13 @@ public class DLL<Type> {
             throw new IllegalArgumentException("Index is out of bounds");
         }
         //increment through
-        Node<Type> doomed;
-        Node<Type> curr = head;
+        Node<Type> doomed = head;
         for (int i = 1; i < theIndex; i++) {
-            curr = curr.next;
+            doomed = doomed.next;
         }
         //change pointers
-        doomed = curr.next;
-        curr.next = curr.next.next;
+        doomed.prev.next = doomed.next;
+        doomed.next.prev = doomed.prev;
         count--;
         return doomed.elem;
     }
@@ -106,7 +109,7 @@ public class DLL<Type> {
         return curr.elem;
     }
 
-    public void swap(int theIndex1, int theIndex2) {
+    public void swap(int theIndex1, int theIndex2) { //TODO fully convert to DLL form
         //check if list is empty; I looked online to figure out what exception to use
         if (count == 0) {
             throw new NoSuchElementException("List is empty. So no element exists");
@@ -115,36 +118,73 @@ public class DLL<Type> {
         if (theIndex1 >= count || theIndex1 < 0 || theIndex2 >= count || theIndex2 < 0) {
             throw new IllegalArgumentException("Index is out of bounds");
         }
-        Node<Type> beforeI1 = head;
-        Node<Type> beforeI2 = head;
+
+        Node<Type> i1 = head;
+        Node<Type> i2 = head;
         //find corresponding nodes. Accounting for if first index is at the start
         if (theIndex1 != 0) {
-            for (int i = 0; i < theIndex1 - 1; i++) {
-                beforeI1 = beforeI1.next;
+            for (int i = 0; i < theIndex1; i++) {
+                i1 = i1.next;
             }
         }
-        for (int i = theIndex1 - 1; i < theIndex2 - 1; i++) {
-            beforeI2 = beforeI1.next;
+        for (int i = theIndex1 - 1; i < theIndex2; i++) {
+                i2 = i2.next;
         }
-        //Node i1;
-        Node<Type> i2 = beforeI2.next;
-        if (theIndex1 == 0) {
-            //changing pointers and using dummy value to not lose the soon-to-be replaced value
-            Node<Type> saver = i2.next;
-            i2.next = head.next;
-            head.next = saver;
-            beforeI2.next = head;
-            head = i2;
-        } else {
-            //changing the pointers before the swapped indices
-            Node<Type> i1 = beforeI1.next;
-            beforeI1.next = i2;
-            beforeI2.next = i1;
-            //updating the swapped nodes next pointers. Used a dummy node so a pointer isn't lost.
-            Node<Type>saver = i1.next;
-            i1.next = i2.next;
-            i2.next = saver;
 
+        if (theIndex1 == 0 && theIndex2 != count--) {
+            //saved pointer
+            Node<Type> saver1 = i1.next;
+            //reassign i1
+            i1.next = i2.next;
+            saver1.prev = i1;
+            i1.prev = i2.prev;
+            i1.prev.next = i1;
+            //reassign i2
+            i2.next = saver1;
+            i2.next.prev = i2;
+            i2.prev = null;
+            head = i2;
+        } else if (theIndex2 == count-- && theIndex1 != 0) {
+            // saved pointers
+            Node<Type> saver1 = i1.next;
+            Node<Type> saver2 = i1.prev;
+            // reassign node 1 or i1
+            i1.next = i2.next;
+            i1.prev = i2.prev;
+            i2.prev.next = i1;
+            //reassign node 2 or i2
+            i2.next = saver1;
+            i2.next.prev = i2;
+            i2.prev = saver2;
+            i2.prev.next = i2;
+        } else if (theIndex2 == count-- && theIndex1 == 0) {
+            // saved pointers
+            Node<Type> saver1 = i1.next;
+            Node<Type> saver2 = i1.prev;
+            // reassign node 1 or i1
+            i1.next = i2.next;
+            i1.prev = i2.prev;
+            i2.prev.next = i1;
+            //reassign node 2 or i2
+            i2.next = saver1;
+            i2.next.prev = i2;
+            i2.prev = null;
+            head = i2;
+        }
+        if (theIndex1 != theIndex2) {
+            // saved pointers
+            Node<Type> saver1 = i1.next;
+            Node<Type> saver2 = i1.prev;
+            // reassign node 1/i1
+            i1.next = i2.next;
+            i2.next.prev = i1;
+            i1.prev = i2.prev;
+            i2.prev.next = i1;
+            //reassign node 2/i2
+            i2.next = saver1;
+            i2.next.prev = i2;
+            i2.prev = saver2;
+            i2.prev.next = i2;
         }
 
     }
@@ -161,13 +201,16 @@ public class DLL<Type> {
         return result;
     }
 
-    // nested node class
+    // nested node class but for DLL
     class Node<Type> {
         private Type elem;
         private Node<Type> next;
+
+        private Node<Type> prev;
         Node() {
             elem = null;
             next = null;
+            prev = null;
         }
 
     }

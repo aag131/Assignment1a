@@ -17,7 +17,7 @@ public class DLLTester  {
             list.addFront("C");
             list.add(3,"ML");
             System.out.println(list);
-            swap(0,4);
+            list.swap(0,4);
             System.out.println("Element at index 0 of SLL is: " + list.get(0));
             System.out.println("Delete element at index 4: " + list.delete(4));
             list.add(3,"JavaScript");
