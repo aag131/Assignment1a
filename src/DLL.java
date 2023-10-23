@@ -120,18 +120,18 @@ public class DLL<Type> {
         }
 
         Node<Type> i1 = head;
-        Node<Type> i2 = head;
         //find corresponding nodes. Accounting for if first index is at the start
         if (theIndex1 != 0) {
             for (int i = 0; i < theIndex1; i++) {
                 i1 = i1.next;
             }
         }
-        for (int i = theIndex1 - 1; i < theIndex2; i++) {
+        Node<Type> i2 = head;
+        for (int i = 0; i < theIndex2; i++) {
                 i2 = i2.next;
         }
 
-        if (theIndex1 == 0 && theIndex2 != count--) {
+        if (theIndex1 == 0 && theIndex2 != count - 1) {
             //saved pointer
             Node<Type> saver1 = i1.next;
             //reassign i1
@@ -144,7 +144,7 @@ public class DLL<Type> {
             i2.next.prev = i2;
             i2.prev = null;
             head = i2;
-        } else if (theIndex2 == count-- && theIndex1 != 0) {
+        } else if (theIndex2 == count - 1 && theIndex1 != 0) {
             // saved pointers
             Node<Type> saver1 = i1.next;
             Node<Type> saver2 = i1.prev;
@@ -157,7 +157,7 @@ public class DLL<Type> {
             i2.next.prev = i2;
             i2.prev = saver2;
             i2.prev.next = i2;
-        } else if (theIndex2 == count-- && theIndex1 == 0) {
+        } else if (theIndex2 == count - 1 && theIndex1 == 0) {
             // saved pointers
             Node<Type> saver1 = i1.next;
             Node<Type> saver2 = i1.prev;
@@ -170,21 +170,20 @@ public class DLL<Type> {
             i2.next.prev = i2;
             i2.prev = null;
             head = i2;
-        }
-        if (theIndex1 != theIndex2) {
+        } else if (theIndex1 != theIndex2) {
             // saved pointers
-            Node<Type> saver1 = i1.next;
+            Node<Type> saver1 = i2.next;
             Node<Type> saver2 = i1.prev;
-            // reassign node 1/i1
-            i1.next = i2.next;
-            i2.next.prev = i1;
-            i1.prev = i2.prev;
+            //reassigning the .nexts
+            i1.prev.next = i2;
+            i2.next = i1.next;
             i2.prev.next = i1;
-            //reassign node 2/i2
-            i2.next = saver1;
+            i1.next = saver1;
+            //reassigning the .previous
+            i1.next.prev = i1;
+            i1.prev = i2.prev;
             i2.next.prev = i2;
             i2.prev = saver2;
-            i2.prev.next = i2;
         }
 
     }
